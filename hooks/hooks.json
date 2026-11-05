@@ -1,0 +1,18 @@
+{
+  "description": "Blocks clearly breaking edits to OpenAPI and GraphQL schema files (removed fields or endpoints, optional to required) until the change is approved",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "You are an API contract safety check. Hook input: $ARGUMENTS\n\n1. If tool_input.file_path is not an API contract file, respond {\"ok\": true}. Contract files are: OpenAPI or Swagger documents (*.yaml, *.yml or *.json named like openapi*, swagger*, api-spec* or under an openapi/ or api-docs/ folder, or whose text has a top-level openapi: or swagger: key) and GraphQL schema files (*.graphql, *.graphqls, *.gql that define types with type, input, enum, interface or schema, not client query documents). Serializers, controllers and route files are NOT contract files here.\n2. Compare the removed text (tool_input.old_string, or each tool_input.edits[].old_string) with the new text (tool_input.new_string, tool_input.content, or each tool_input.edits[].new_string). If you cannot see what the edit removes (for example a Write with only tool_input.content), respond {\"ok\": true}.\n3. Respond {\"ok\": true} if the new text contains api-contract: breaking-approved (as a # comment in YAML or GraphQL, or in JSON as the value of an x-api-contract-note key).\n4. Block only these CLEARLY BREAKING changes: removing a path or an HTTP operation; removing a response property or schema property; removing a GraphQL type, field, argument or enum value; removing an enum value from an OpenAPI request parameter or body; making an optional parameter, request property, GraphQL argument or input field required (required: true, added to a required list, or nullable to non-null with !); adding a new required parameter, request property, argument or input field. Everything else is allowed, including additions, new optional fields, descriptions, examples, deprecated markers, reformatting and moving text within the same edit.\n5. For a CLEARLY BREAKING change respond {\"ok\": false, \"reason\": \"<change> in <file> breaks existing clients. Safe pattern: <short steps, e.g. add the new field, mark the old one deprecated, remove after a sunset date or in a new version>. If the user explicitly approved this breaking change, add the comment api-contract: breaking-approved to the file and retry.\"}\n\nRespond with the JSON object only.",
+            "timeout": 30,
+            "continueOnBlock": true
+          }
+        ]
+      }
+    ]
+  }
+}

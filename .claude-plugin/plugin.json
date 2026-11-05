@@ -1,0 +1,25 @@
+{
+  "name": "api-contract-guard",
+  "description": "Catches breaking API changes before they ship: removed or renamed response fields, type changes, new required request params, removed endpoints, removed enum values, auth changes and GraphQL field removal or nullability changes, across OpenAPI, GraphQL, Rails, Django REST Framework, Laravel and Node",
+  "version": "1.0.0",
+  "author": {
+    "name": "Ahmed",
+    "email": "ahmed.abdelatife@gmail.com"
+  },
+  "homepage": "https://github.com/a-abdellatif98/api-contract-guard",
+  "repository": "https://github.com/a-abdellatif98/api-contract-guard",
+  "license": "MIT",
+  "icon": "assets/icon.svg",
+  "keywords": [
+    "api",
+    "breaking-changes",
+    "django",
+    "graphql",
+    "hooks",
+    "laravel",
+    "openapi",
+    "rails",
+    "swagger",
+    "versioning"
+  ]
+}
